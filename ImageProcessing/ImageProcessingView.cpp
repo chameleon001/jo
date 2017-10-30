@@ -63,6 +63,7 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_MIRROR_VER, &CImageProcessingView::OnMirrorVer)
     ON_COMMAND(ID_ROTATION, &CImageProcessingView::OnRotation)
     ON_COMMAND(ID_MORPHING, &CImageProcessingView::OnMorphing)
+
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
