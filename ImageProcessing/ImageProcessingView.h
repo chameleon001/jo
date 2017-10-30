@@ -72,6 +72,7 @@ public:
      afx_msg void OnNearest();
      afx_msg void OnBilinear();
      afx_msg void OnMedianSub();
+     afx_msg void OnMeanSub();
 };
 
 #ifndef _DEBUG  // ImageProcessingView.cpp의 디버그 버전

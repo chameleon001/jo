@@ -56,7 +56,6 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_BILINEAR, &CImageProcessingView::OnBilinear)
 
     ON_COMMAND(ID_MEDIAN_SUB, &CImageProcessingView::OnMedianSub)
-    ON_COMMAND(ID_MEAN_SUB, &CImageProcessingView::OnMeanSub)
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -509,19 +508,5 @@ void CImageProcessingView::OnDivConstant()
         pDoc->OnMedianSub();
 
         Invalidate(TRUE);
-
-    }
-
-
-    void CImageProcessingView::OnMeanSub()
-    {
-        CImageProcessingDoc* pDoc = GetDocument();
-        ASSERT_VALID(pDoc);
-
-        pDoc->OnMeanSub();
-
-        Invalidate(TRUE);
-
-      
 
     }

@@ -151,13 +151,15 @@
 #define ID_BILINEAR                     32829
 #define ID_32830                        32830
 #define ID_MEDIAN_SUB                   32831
+#define ID_32832                        32832
+#define ID_MEAN_SUB                     32833
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32832
+#define _APS_NEXT_COMMAND_VALUE         32834
 #define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

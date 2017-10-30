@@ -348,6 +348,7 @@ BEGIN
         MENUITEM "인접한 이웃 화소 보간법",               ID_NEAREST
         MENUITEM "양선형 보간법",                     ID_BILINEAR
         MENUITEM "미디언 서브 샘플링",                  ID_MEDIAN_SUB
+        MENUITEM "평균 서브 샘플링",                   ID_MEAN_SUB
     END
 END
 

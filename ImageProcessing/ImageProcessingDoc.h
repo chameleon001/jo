@@ -108,4 +108,5 @@ public:
        afx_msg void OnMedianSub();
        void OnBubleSort(double * A, int MAX);
        void OnSwap(double * a, double * b);
+       afx_msg void OnMeanSub();
 };

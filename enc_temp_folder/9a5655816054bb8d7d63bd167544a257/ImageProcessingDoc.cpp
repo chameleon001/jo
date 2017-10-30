@@ -52,7 +52,6 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_BILINEAR, &CImageProcessingDoc::OnBilinear)
     ON_COMMAND(ID_MEDIAN_SUB, &CImageProcessingDoc::OnMedianSub)
 
-    ON_COMMAND(ID_MEAN_SUB, &CImageProcessingDoc::OnMeanSub)
 END_MESSAGE_MAP()
 
 
@@ -1404,44 +1403,4 @@ void CImageProcessingDoc::OnSwap(double *a, double *b)
     temp = *a;
     *a = *b;
     *b = temp;
-}
-
-
-void CImageProcessingDoc::OnMeanSub()
-{
-    int i, j, n, m, M = 3, index = 0, k; // M = 서브 샘플링 비율
-    double *Mask, Value, Sum = 0.0;
-
-    Mask = new    double[M*M];
-
-    m_Re_height = (m_height + 1) / M;
-    m_Re_width = (m_width + 1) / M;
-    m_Re_size = m_Re_height * m_Re_width;
-
-    m_OutputImage = new unsigned char[m_Re_size];
-    m_tempImage = Image2DMem(m_height + 1, m_width + 1);
-
-    for (i = 0; i<m_height; i++) {
-        for (j = 0; j<m_width; j++) {
-            m_tempImage[i][j] = (double)m_InputImage[i*m_width + j];
-        }
-    }
-
-    for (i = 0; i<m_height - 1; i = i + M) {
-        for (j = 0; j<m_width - 1; j = j + M) {
-            for (n = 0; n<M; n++) {
-                for (m = 0; m<M; m++) {
-                    Mask[n*M + m] = m_tempImage[i + n][j + m];
-                }
-            }
-            for (k = 0; k<M*M; k++)
-                Sum = Sum + Mask[k];
-            // 마스크에 저장된 값을 누적
-            Value = (Sum / (M*M)); // 평균을 계산
-            m_OutputImage[index] = (unsigned char)Value;
-            // 평균값을 출력
-            index++;
-            Sum = 0.0;
-        }
-    }
 }
