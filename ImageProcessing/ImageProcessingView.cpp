@@ -57,6 +57,12 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
 
     ON_COMMAND(ID_MEDIAN_SUB, &CImageProcessingView::OnMedianSub)
     ON_COMMAND(ID_MEAN_SUB, &CImageProcessingView::OnMeanSub)
+    ON_COMMAND(ID_TRANSLATION, &CImageProcessingView::OnTranslation)
+
+    ON_COMMAND(ID_MIRROR_HOR, &CImageProcessingView::OnMirrorHor)
+    ON_COMMAND(ID_MIRROR_VER, &CImageProcessingView::OnMirrorVer)
+    ON_COMMAND(ID_ROTATION, &CImageProcessingView::OnRotation)
+    ON_COMMAND(ID_MORPHING, &CImageProcessingView::OnMorphing)
 END_MESSAGE_MAP()
 
 // CImageProcessingView 생성/소멸 
@@ -524,4 +530,58 @@ void CImageProcessingView::OnDivConstant()
 
       
 
+    }
+
+
+    void CImageProcessingView::OnTranslation()
+    {
+        // TODO: 여기에 명령 처리기 코드를 추가합니다.
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnTranslation();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnMirrorHor()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnMirrorHor();
+
+        Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnMirrorVer()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnMirrorVer();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnRotation()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnRotation();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnMorphing()
+    {
+        // TODO: 여기에 명령 처리기 코드를 추가합니다.
     }

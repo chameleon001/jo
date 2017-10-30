@@ -11,6 +11,8 @@
 
 #include "ImageProcessingDoc.h"
 #include "DownSampleDlg.h"
+#include "Move.h"
+#include "c_rotation.h"
 #include "UpSampleDlg.h"
 #include "QuantizationDlg.h"
 #include "math.h"
@@ -53,6 +55,11 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_MEDIAN_SUB, &CImageProcessingDoc::OnMedianSub)
 
     ON_COMMAND(ID_MEAN_SUB, &CImageProcessingDoc::OnMeanSub)
+    ON_COMMAND(ID_TRANSLATION, &CImageProcessingDoc::OnTranslation)
+    ON_COMMAND(ID_MIRROR_HOR, &CImageProcessingDoc::OnMirrorHor)
+    ON_COMMAND(ID_MIRROR_VER, &CImageProcessingDoc::OnMirrorVer)
+    ON_COMMAND(ID_ROTATION, &CImageProcessingDoc::OnRotation)
+    ON_COMMAND(ID_MORPHING, &CImageProcessingDoc::OnMorphing)
 END_MESSAGE_MAP()
 
 
@@ -1444,4 +1451,212 @@ void CImageProcessingDoc::OnMeanSub()
             Sum = 0.0;
         }
     }
+}
+
+
+/*
+CConstantDlg dlg;
+int i;
+
+m_Re_height = m_height;
+m_Re_width = m_width;
+m_Re_size = m_Re_height * m_Re_width;
+
+m_OutputImage = new unsigned char[m_Re_size];
+
+if (dlg.DoModal() == IDOK) {
+
+}
+
+
+
+m_OutputImage = new unsigned char[m_Re_size];
+
+if (dlg.DoModal() == IDOK) {
+for (i = 0; i<m_size; i++) {
+// 비트 단위 AND 연산
+if ((m_InputImage[i] & (unsigned char)dlg.m_Constant) >= 255)
+{
+m_OutputImage[i] = 255;
+}
+else if ((m_InputImage[i] & (unsigned char)dlg.m_Constant)< 0)
+{
+m_OutputImage[i] = 0;
+}
+else {
+m_OutputImage[i] = (m_InputImage[i]
+& (unsigned char)dlg.m_Constant);
+}
+}
+}
+
+*/
+
+void CImageProcessingDoc::OnTranslation()
+{
+    CMove dlg;
+    // TODO: 여기에 명령 처리기 코드를 추가합니다.
+    int i, j;
+    int h_pos = 30, w_pos = 130;
+    //나중에 사용자가 직접 입력하도록 변경하기
+    double **tempArray;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    m_tempImage = Image2DMem(m_height, m_width);
+    tempArray = Image2DMem(m_Re_height, m_Re_width);
+
+
+    if (dlg.DoModal() == IDOK) {
+
+        h_pos = dlg.m_move_y;
+        w_pos = dlg.m_move_y;
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            m_tempImage[i][j] = (double)m_InputImage[i*m_width + j];
+        }
+    }
+    for (i = 0; i<m_height - h_pos; i++) {
+        for (j = 0; j<m_width - w_pos; j++) {
+            tempArray[i + h_pos][j + w_pos] = m_tempImage[i][j];
+            // 입력 영상을 h_pos, w_pos만큼 이동
+        }
+    }
+
+    for (i = 0; i< m_Re_height; i++) {
+        for (j = 0; j< m_Re_width; j++) {
+            m_OutputImage[i* m_Re_width + j]
+                = (unsigned char)tempArray[i][j];
+        }
+    }
+    }
+    delete[] m_tempImage;
+    delete[] tempArray;
+
+
+}
+
+
+void CImageProcessingDoc::OnMirrorHor()
+{
+    int i, j;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            m_OutputImage[i*m_width + m_width - j - 1] =
+                m_InputImage[i*m_width + j];
+            // 입력 영상의 배열 값을 출력 영상을 위한 
+            // 배열의 수평축 뒷자리부터 저장
+        }
+    }
+
+}
+
+
+void CImageProcessingDoc::OnMirrorVer()
+{
+    int i, j;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            m_OutputImage[(m_height - i - 1)*m_width + j]
+                = m_InputImage[i*m_width + j];
+            // 입력 영상의 값을 출력 영상을 위한 배열의 수직축 뒷자리부터 저장
+        }
+    }
+
+}
+
+
+void CImageProcessingDoc::OnRotation()
+{
+    c_rotation dlg;
+
+    int i, j, CenterH, CenterW, newH, newW, degree = 45;
+    // degree = 회전할 각도
+
+    double Radian, PI, **tempArray, Value;
+
+
+
+    if (dlg.DoModal() == IDOK) {
+        i, j, CenterH, CenterW, newH, newW, degree = dlg.c_rotation_dgree;
+
+        m_Re_height = m_height; // 회전된 영상의 높이
+        m_Re_width = m_width; // 회전된 영상의 너비
+        m_Re_size = m_Re_height * m_Re_width;
+
+        m_OutputImage = new unsigned char[m_Re_size];
+        PI = 3.14159265358979; // 회전각을 위한 PI 값
+
+        Radian = (double)degree*PI / 180.0;
+        // degree 값을 radian으로 변경
+        CenterH = m_height / 2; // 영상의 중심 좌표
+        CenterW = m_width / 2; // 영상의 중심 좌표
+
+        m_tempImage = Image2DMem(m_height, m_width);
+        tempArray = Image2DMem(m_Re_height, m_Re_width);
+
+        for (i = 0; i < m_height; i++) {
+            for (j = 0; j < m_width; j++) {
+                m_tempImage[i][j] = (double)m_InputImage[i*m_width + j];
+            }
+        }
+        for (i = 0; i < m_height; i++) {
+            for (j = 0; j < m_width; j++) {
+                // 회전 변환 행렬을 이용하여 회전하게 될 좌표 값 계산
+                newH = (int)((i - CenterH)*cos(Radian)
+                    - (j - CenterW)*sin(Radian) + CenterH);
+                newW = (int)((i - CenterH)*sin(Radian)
+                    + (j - CenterW)*sin(Radian) + CenterW);
+
+                if (newH < 0 || newH >= m_height) {
+                    // 회전된 좌표가 출력 영상을 위한 배열 값을 넘어갈 때
+                    Value = 0;
+                }
+                else if (newW < 0 || newW >= m_width) {
+                    // 회전된 좌표가 출력 영상을 위한 배열 값을 넘어갈 때
+                    Value = 0;
+                }
+                else {
+                    Value = m_tempImage[newH][newW];
+                }
+                tempArray[i][j] = Value;
+            }
+        }
+
+        for (i = 0; i < m_Re_height; i++) {
+            for (j = 0; j < m_Re_width; j++) {
+                m_OutputImage[i* m_Re_width + j]
+                    = (unsigned char)tempArray[i][j];
+            }
+        }
+    }
+
+    delete[] m_tempImage;
+    //delete[] tempArray;
+    //이문제 나중에 해결하기
+}
+
+
+
+void CImageProcessingDoc::OnMorphing()
+{
+    // TODO: 여기에 명령 처리기 코드를 추가합니다.
 }

@@ -350,6 +350,14 @@ BEGIN
         MENUITEM "미디언 서브 샘플링",                  ID_MEDIAN_SUB
         MENUITEM "평균 서브 샘플링",                   ID_MEAN_SUB
     END
+    POPUP "기하학 변환"
+    BEGIN
+        MENUITEM "영상 이동",                       ID_TRANSLATION
+        MENUITEM "영상 좌우 대칭",                    ID_MIRROR_HOR
+        MENUITEM "영상 상하 대칭",                    ID_MIRROR_VER
+        MENUITEM "영상회전",                        ID_ROTATION
+        MENUITEM "영상 모핑",                       ID_MORPHING
+    END
 END
 
 IDR_POPUP_EDIT MENU
@@ -511,6 +519,30 @@ BEGIN
     EDITTEXT        IDC_EDIT1,169,57,40,14,ES_AUTOHSCROLL
 END
 
+IDD_DIALOG6 DIALOGEX 0, 0, 309, 176
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,198,155,50,14
+    PUSHBUTTON      "취소",IDCANCEL,252,155,50,14
+    EDITTEXT        IDC_EDIT1,81,51,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,179,49,40,14,ES_AUTOHSCROLL
+    LTEXT           "x",IDC_STATIC,23,52,8,8
+    LTEXT           "y",IDC_STATIC,141,52,8,8
+END
+
+IDD_DIALOG7 DIALOGEX 0, 0, 309, 176
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,198,155,50,14
+    PUSHBUTTON      "취소",IDCANCEL,252,155,50,14
+    EDITTEXT        IDC_EDIT1,135,61,40,14,ES_AUTOHSCROLL
+    LTEXT           "각도",IDC_STATIC,64,63,16,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -606,6 +638,22 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 169
     END
+
+    IDD_DIALOG6, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
+
+    IDD_DIALOG7, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -636,6 +684,16 @@ BEGIN
 END
 
 IDD_DIALOG5 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG6 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG7 AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

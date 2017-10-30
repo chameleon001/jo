@@ -89,7 +89,10 @@
 #define IDD_DIALOG3                     314
 #define IDD_DIALOG4                     316
 #define IDD_DIALOG5                     318
+#define IDD_DIALOG6                     320
+#define IDD_DIALOG7                     322
 #define IDC_EDIT1                       1000
+#define IDC_EDIT2                       1001
 #define ID_32771                        32771
 #define ID_UP_SAMPLE                    32772
 #define ID_                             32773
@@ -153,14 +156,24 @@
 #define ID_MEDIAN_SUB                   32831
 #define ID_32832                        32832
 #define ID_MEAN_SUB                     32833
+#define ID_32834                        32834
+#define ID_TRANSLATION                  32835
+#define ID_32836                        32836
+#define ID_MIRROR_HOR                   32837
+#define ID_32838                        32838
+#define ID_MIRROR_VER                   32839
+#define ID_32840                        32840
+#define ID_ROTATION                     32841
+#define ID_32842                        32842
+#define ID_MORPHING                     32843
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        320
-#define _APS_NEXT_COMMAND_VALUE         32834
-#define _APS_NEXT_CONTROL_VALUE         1001
+#define _APS_NEXT_RESOURCE_VALUE        324
+#define _APS_NEXT_COMMAND_VALUE         32844
+#define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

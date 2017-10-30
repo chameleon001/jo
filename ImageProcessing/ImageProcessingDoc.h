@@ -109,4 +109,9 @@ public:
        void OnBubleSort(double * A, int MAX);
        void OnSwap(double * a, double * b);
        afx_msg void OnMeanSub();
+       afx_msg void OnTranslation();
+       afx_msg void OnMirrorHor();
+       afx_msg void OnMirrorVer();
+       afx_msg void OnRotation();
+       afx_msg void OnMorphing();
 };
