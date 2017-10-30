@@ -1,3 +1,4 @@
-# image
+# imageProcessing
 
-¿©·¯ ÀÌ¹ÌÁö ÇÁ·Î¼¼½Ì ±â¹ýµé ¸ðÀ½
+ì´ë¯¸ì§€í”„ë¡œì„¸ì‹±ê¸°ë²•ë“¤
+mfcê¸°ë°˜
