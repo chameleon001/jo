@@ -1,3 +1,4 @@
 # imageProcessing
 
-many
+이미지프로세싱기법들
+mfc기반
