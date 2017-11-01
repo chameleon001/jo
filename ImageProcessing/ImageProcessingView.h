@@ -78,6 +78,9 @@ public:
      afx_msg void OnMirrorVer();
      afx_msg void OnRotation();
      afx_msg void OnMorphing();
+     void OnWMap();
+    
+ 
 };
 
 #ifndef _DEBUG  // ImageProcessingView.cpp의 디버그 버전

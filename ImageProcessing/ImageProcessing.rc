@@ -357,6 +357,7 @@ BEGIN
         MENUITEM "영상 상하 대칭",                    ID_MIRROR_VER
         MENUITEM "영상회전",                        ID_ROTATION
         MENUITEM "영상 모핑",                       ID_MORPHING
+        MENUITEM "영상 워핑",                       ID_WMap
     END
 END
 

@@ -60,6 +60,7 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_MIRROR_VER, &CImageProcessingDoc::OnMirrorVer)
     ON_COMMAND(ID_ROTATION, &CImageProcessingDoc::OnRotation)
     ON_COMMAND(ID_MORPHING, &CImageProcessingDoc::OnMorphing)
+    //ON_COMMAND(ID_WMap, &CImageProcessingDoc::OnWmap)
 END_MESSAGE_MAP()
 
 
@@ -1659,4 +1660,118 @@ void CImageProcessingDoc::OnRotation()
 void CImageProcessingDoc::OnMorphing()
 {
     // TODO: 여기에 명령 처리기 코드를 추가합니다.
+
+    CFile File;
+    CFileDialog OpenDlg(TRUE);
+
+    int i;
+    unsigned char *temp;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    if (OpenDlg.DoModal() == IDOK) {
+        File.Open(OpenDlg.GetPathName(), CFile::modeRead);
+        // 덧셈연산을 수행할 새로운 영상을 얻기 위해 
+        // 열기 대화상자를 이용해 영상을 입력
+
+        if (File.GetLength() == (unsigned)m_width * m_height) {
+            temp = new unsigned char[m_size];
+            m_InputImage2 = temp;
+            // 입력 값 저장을 위한 배열 선언
+
+            File.Read(temp, m_size); // 선택된 파일을 읽어 배열에 저장
+            File.Close();
+        }
+        else {
+            AfxMessageBox(CString("Image size not matched"));
+            //영상의 크기가 다를 때는 처리하지 않음
+            return;
+        }
+    }
+
 }
+
+void CImageProcessingDoc::OnWMap()
+{
+    // TODO: 여기에 명령 처리기 코드를 추가합니다.
+    int i, j, x, y;
+    bool flag;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    WMap(100, 20, &x, &y);
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            WMap(j, i, &x, &y);
+            flag = true;
+            if ((x>m_width - 1) || (x<0) || (y>m_height - 1) || (y<0)) flag = false;
+            if (flag) m_OutputImage[i* m_Re_width + j] = (unsigned char)m_InputImage[y* m_width + x];
+            else m_OutputImage[i* m_Re_width + j] = 255;
+        }
+    }
+}
+
+void CImageProcessingDoc::WMap(int x, int y, int *wx, int *wy)
+{
+    //직사각형을 (x0,y0), (x1,y1), (x2,y2), (x3,y3) 4점을 꼭지점으로하는 사각형으로
+    int x1 = m_width + 20, y1 = 10, x2 = m_width + 10, y2 = m_height + 30, x3 = 0, y3 = m_height + 10;
+    //	int x1=m_width, y1=0, x2=m_width, y2=m_height, x3=0, y3=m_height;
+    float sx, sy, tx, ty;
+    float k1, k2, k3, t1;
+
+    if (x*y2 - y*x2>0) {
+        k1 = x1*y2 - y1*x2;
+        k2 = x1*y - y1*x;
+        k3 = x*y2 - y*x2;
+        if (k2 != 0) {
+            t1 = k2 / k1;
+            sx = x - t1*x2;
+            sy = y - t1*y2;
+        }
+        else {
+            sx = x; sy = y;
+        }
+        if (k3 != 0) {
+            t1 = k3 / k1;
+            tx = x - t1*x1;
+            ty = y - t1*y1;
+        }
+        else {
+            tx = x; ty = y;
+        }
+        *wx = (int)((sx / x1 + tx / x2)*m_width);
+        *wy = (int)(ty*m_height / y2);
+    }
+    else {
+        k1 = x2*y3 - y2*x3;
+        k2 = x2*y - y2*x;
+        k3 = x*y3 - y*x3;
+        if (k2 != 0) {
+            t1 = k2 / k1;
+            sx = x - t1*x3;
+            sy = y - t1*y3;
+        }
+        else {
+            sx = x; sy = y;
+        }
+        if (k3 != 0) {
+            t1 = k3 / k1;
+            tx = x - t1*x2;
+            ty = y - t1*y2;
+        }
+        else {
+            tx = x; ty = y;
+        }
+        *wx = (int)(sx*m_width / x2);
+        *wy = (int)((sy / y2 + ty / y3)*m_height);
+    }
+}
+

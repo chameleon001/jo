@@ -64,6 +64,8 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_ROTATION, &CImageProcessingView::OnRotation)
     ON_COMMAND(ID_MORPHING, &CImageProcessingView::OnMorphing)
 
+    ON_COMMAND(ID_WMap, &CImageProcessingView::OnWMap)
+  //  ON_UPDATE_COMMAND_UI(ID_WMap, &CImageProcessingView::OnUpdateWmap)
 END_MESSAGE_MAP()
 
 // CImageProcessingView 생성/소멸 
@@ -585,4 +587,36 @@ void CImageProcessingView::OnDivConstant()
     void CImageProcessingView::OnMorphing()
     {
         // TODO: 여기에 명령 처리기 코드를 추가합니다.
+        // TODO: 여기에 명령 처리기 코드를 추가합니다.
+        float al;
+        int i, j, k;
+        unsigned char R;
+        CImageProcessingDoc* pDoc = GetDocument();
+        CClientDC dc(this);
+        pDoc->OnMorphing(); // Doc 클래스에서 생성해야 할 함수 이름
+        al = 0;
+        for (k = 0; k < 5; k++) {
+            al += 0.2;
+            for (i = 0; i < pDoc->m_size; i++) {
+                pDoc->m_OutputImage[i] = (1 - al)*pDoc->m_InputImage[i] + al*pDoc->m_InputImage2[i];
+            }
+            for (i = 0; i < pDoc->m_height; i++) {
+                for (j = 0; j < pDoc->m_width; j++) {
+                    R = pDoc->m_OutputImage[i*pDoc->m_width + j];
+                    dc.SetPixel(j + pDoc->m_width + 10, i + 5, RGB(R, R, R));
+                }
+            }
+            Sleep(500);
+        }
+    }
+
+    void CImageProcessingView::OnWMap()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnWMap();
+
+        Invalidate(TRUE);
+
     }

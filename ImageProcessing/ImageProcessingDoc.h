@@ -20,6 +20,7 @@ public:
 	unsigned char* m_OutputImage; //Output이미지 추가
 	int m_Re_width, m_Re_height, m_Re_size;
 
+    unsigned char *m_InputImage2, *m_OutputImage2;
     double m_HIST[256];
     double m_Sum_Of_HIST[256];
     unsigned char m_Scale_HIST[256];
@@ -114,4 +115,8 @@ public:
        afx_msg void OnMirrorVer();
        afx_msg void OnRotation();
        afx_msg void OnMorphing();
+       void OnWMap();
+     
+       void WMap(int x, int y, int * wx, int * wy);
+      
 };
