@@ -367,6 +367,7 @@ BEGIN
         MENUITEM "프레임 나눗셈",                     ID_FRAME_DIV
         MENUITEM "프레임 AND",                     ID_FRAME_AND
         MENUITEM "프레임 OR",                      ID_FRAME_OR
+        MENUITEM "프레임 합성",                      ID_FRAME_COMB
     END
 END
 

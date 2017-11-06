@@ -125,4 +125,5 @@ public:
        afx_msg void OnFrameDiv();
        afx_msg void OnFrameAnd();
        afx_msg void OnFrameOr();
+       afx_msg void OnFrameComb();
 };

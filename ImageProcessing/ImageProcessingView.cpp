@@ -72,6 +72,7 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_FRAME_DIV, &CImageProcessingView::OnFrameDiv)
     ON_COMMAND(ID_FRAME_AND, &CImageProcessingView::OnFrameAnd)
     ON_COMMAND(ID_FRAME_OR, &CImageProcessingView::OnFrameOr)
+    ON_COMMAND(ID_FRAME_COMB, &CImageProcessingView::OnFrameComb)
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -692,6 +693,18 @@ void CImageProcessingView::OnDivConstant()
         ASSERT_VALID(pDoc);
 
         pDoc->OnFrameOr();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnFrameComb()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnFrameComb();
 
         Invalidate(TRUE);
 

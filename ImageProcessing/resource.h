@@ -180,13 +180,15 @@
 #define ID_FRAME_AND                    32855
 #define ID_32856                        32856
 #define ID_FRAME_OR                     32857
+#define ID_32858                        32858
+#define ID_FRAME_COMB                   32859
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
-#define _APS_NEXT_COMMAND_VALUE         32858
+#define _APS_NEXT_COMMAND_VALUE         32860
 #define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

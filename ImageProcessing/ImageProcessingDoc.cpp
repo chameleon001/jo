@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_FRAME_DIV, &CImageProcessingDoc::OnFrameDiv)
     ON_COMMAND(ID_FRAME_AND, &CImageProcessingDoc::OnFrameAnd)
     ON_COMMAND(ID_FRAME_OR, &CImageProcessingDoc::OnFrameOr)
+    ON_COMMAND(ID_FRAME_COMB, &CImageProcessingDoc::OnFrameComb)
 END_MESSAGE_MAP()
 
 
@@ -2019,6 +2020,54 @@ void CImageProcessingDoc::OnFrameOr()
             AfxMessageBox((CString)"Image size not matched");
             return;
         }
+    }
+
+}
+
+
+void CImageProcessingDoc::OnFrameComb()
+{
+    CFile File;
+    CFileDialog OpenDlg(TRUE);
+    int i;
+    unsigned char *temp = NULL, *masktemp = NULL, maskvalue;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    AfxMessageBox((CString)"합성할 영상을 입력하시오");
+
+    if (OpenDlg.DoModal() == IDOK) { // 합성할 영상을 입력
+        File.Open(OpenDlg.GetPathName(), CFile::modeRead);
+        temp = new unsigned char[m_size];
+        File.Read(temp, m_size);
+
+        if ((unsigned)m_width * m_height != File.GetLength()) {
+            AfxMessageBox(CString("Image size not matched"));
+            // 영상의 크기가 같을 때
+            return;
+        }
+        File.Close();
+    }
+    // 입력 영상, 합성할 영상, 마스크 영상의 크기가 같아야 한다.
+    AfxMessageBox(CString("입력 영상의 마스크 영상을 입력하시오"));
+    if (OpenDlg.DoModal() == IDOK) { // 입력 영상의 마스크 영상
+        File.Open(OpenDlg.GetPathName(), CFile::modeRead);
+        masktemp = new unsigned char[m_size];
+        File.Read(masktemp, m_size);
+        File.Close();
+    }
+
+    for (i = 0; i<m_size; i++) {
+        maskvalue = 255 - masktemp[i];
+        // 영상의 최대값에서 마스크 영상의 값을 뺀다.
+        m_OutputImage[i]
+            = (m_InputImage[i] & masktemp[i]) | (temp[i] & maskvalue);
+        // 입력 영상과 마스크 영상은 AND 연산을 하고, 합성할 영상은
+        // (255-마스크 영상) 값과 AND 연산을 실행한 후 두 값을 더한다.
     }
 
 }

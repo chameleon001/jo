@@ -87,6 +87,7 @@ public:
      afx_msg void OnFrameDiv();
      afx_msg void OnFrameAnd();
      afx_msg void OnFrameOr();
+     afx_msg void OnFrameComb();
 };
 
 #ifndef _DEBUG  // ImageProcessingView.cpp의 디버그 버전
