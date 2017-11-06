@@ -119,4 +119,10 @@ public:
      
        void WMap(int x, int y, int * wx, int * wy);
       
+       afx_msg void OnFrameSum();
+       afx_msg void OnFrameSub();
+       afx_msg void OnFrameMul();
+       afx_msg void OnFrameDiv();
+       afx_msg void OnFrameAnd();
+       afx_msg void OnFrameOr();
 };

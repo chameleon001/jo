@@ -359,6 +359,15 @@ BEGIN
         MENUITEM "영상 모핑",                       ID_MORPHING
         MENUITEM "영상 워핑",                       ID_WMap
     END
+    POPUP "프레임 처리"
+    BEGIN
+        MENUITEM "프레임 덧셈",                      ID_FRAME_SUM
+        MENUITEM "프레임 뺄셈",                      ID_FRAME_SUB
+        MENUITEM "프레임 곱셈",                      ID_FRAME_MUL
+        MENUITEM "프레임 나눗셈",                     ID_FRAME_DIV
+        MENUITEM "프레임 AND",                     ID_FRAME_AND
+        MENUITEM "프레임 OR",                      ID_FRAME_OR
+    END
 END
 
 IDR_POPUP_EDIT MENU

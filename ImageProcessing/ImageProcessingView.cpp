@@ -66,6 +66,12 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
 
     ON_COMMAND(ID_WMap, &CImageProcessingView::OnWMap)
   //  ON_UPDATE_COMMAND_UI(ID_WMap, &CImageProcessingView::OnUpdateWmap)
+    ON_COMMAND(ID_FRAME_SUM, &CImageProcessingView::OnFrameSum)
+    ON_COMMAND(ID_FRAME_SUB, &CImageProcessingView::OnFrameSub)
+    ON_COMMAND(ID_FRAME_MUL, &CImageProcessingView::OnFrameMul)
+    ON_COMMAND(ID_FRAME_DIV, &CImageProcessingView::OnFrameDiv)
+    ON_COMMAND(ID_FRAME_AND, &CImageProcessingView::OnFrameAnd)
+    ON_COMMAND(ID_FRAME_OR, &CImageProcessingView::OnFrameOr)
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -616,6 +622,76 @@ void CImageProcessingView::OnDivConstant()
         ASSERT_VALID(pDoc);
 
         pDoc->OnWMap();
+
+        Invalidate(TRUE);
+
+    }
+
+    void CImageProcessingView::OnFrameSum()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnFrameSum();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnFrameSub()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnFrameSub();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnFrameMul()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnFrameMul();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnFrameDiv()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnFrameDiv();
+
+        Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnFrameAnd()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnFrameAnd();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnFrameOr()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnFrameOr();
 
         Invalidate(TRUE);
 

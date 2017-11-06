@@ -81,6 +81,12 @@ public:
      void OnWMap();
     
  
+     afx_msg void OnFrameSum();
+     afx_msg void OnFrameSub();
+     afx_msg void OnFrameMul();
+     afx_msg void OnFrameDiv();
+     afx_msg void OnFrameAnd();
+     afx_msg void OnFrameOr();
 };
 
 #ifndef _DEBUG  // ImageProcessingView.cpp의 디버그 버전
