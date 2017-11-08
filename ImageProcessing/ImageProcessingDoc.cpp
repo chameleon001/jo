@@ -69,6 +69,9 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_FRAME_AND, &CImageProcessingDoc::OnFrameAnd)
     ON_COMMAND(ID_FRAME_OR, &CImageProcessingDoc::OnFrameOr)
     ON_COMMAND(ID_FRAME_COMB, &CImageProcessingDoc::OnFrameComb)
+    ON_COMMAND(ID_BINARY_EROSION, &CImageProcessingDoc::OnBinaryErosion)
+    ON_COMMAND(ID_BINARY_DILATION, &CImageProcessingDoc::OnBinaryDilation)
+    ON_COMMAND(ID_GRAY_EROSION, &CImageProcessingDoc::OnGrayErosion)
 END_MESSAGE_MAP()
 
 
@@ -2070,4 +2073,139 @@ void CImageProcessingDoc::OnFrameComb()
         // (255-마스크 영상) 값과 AND 연산을 실행한 후 두 값을 더한다.
     }
 
+}
+
+
+void CImageProcessingDoc::OnBinaryErosion()
+{
+    int i, j, n, m;
+    double Mask[3][3] = { { 255.,255.,255. },
+    { 255.,255.,255. },
+    { 255.,255.,255. } };
+    // 침식연산을 위한 마스크
+    double **tempInput, S = 0.0;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    tempInput = Image2DMem(m_height + 2, m_width + 2);
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            tempInput[i + 1][j + 1]
+                = (double)m_InputImage[i * m_width + j];
+        }
+    }
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            for (n = 0; n<3; n++) {
+                for (m = 0; m<3; m++) {
+                    if (Mask[n][m] == tempInput[i + n][j + m]) {
+                        // 마스크와 같은 값이 있는지 조사
+                        S += 1.0;
+                    }
+                }
+            }
+            if (S == 9.0)
+                m_OutputImage[i * m_Re_width + j] = (unsigned char)255.0;
+            // 값이 모두 일치하면 출력 값은 255
+            else
+                m_OutputImage[i * m_Re_width + j] = (unsigned char)0.0;
+            // 모두 일치하지 않으면 출력 값은 0
+            S = 0.0; // reset
+        }
+    }
+    delete[] tempInput;
+
+
+}
+
+
+void CImageProcessingDoc::OnBinaryDilation()
+{
+    int i, j, n, m;
+    double Mask[3][3] = { { 0., 0., 0. },{ 0., 0., 0. },{ 0., 0., 0. } };
+    // 팽창 처리를 위한 마스크
+    double **tempInput, S = 0.0;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    tempInput = Image2DMem(m_height + 2, m_width + 2);
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            tempInput[i + 1][j + 1]
+                = (double)m_InputImage[i * m_width + j];
+        }
+    }
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            for (n = 0; n<3; n++) {
+                for (m = 0; m<3; m++) {
+                    if (Mask[n][m] == tempInput[i + n][j + m]) {
+                        // 마스크와 같은 값이 있는지 조사
+                        S += 1.0;
+                    }
+                }
+            }
+            if (S == 9.0)
+                m_OutputImage[i * m_Re_width + j]
+                = (unsigned char)0.0;
+            // 모두 일치하면 출력 값은 0
+            else
+                m_OutputImage[i * m_Re_width + j]
+                = (unsigned char)255.0;
+            // 모두 일치하지 않으면 출력 값은 255
+            S = 0.0;
+        }
+    }
+    delete[] tempInput;
+
+}
+
+
+void CImageProcessingDoc::OnGrayErosion()
+{
+    int i, j, n, m, h;
+    double Mask[9], MIN = 10000.0; // MIN = 최소값
+    double **tempInput, S = 0.0;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    tempInput = Image2DMem(m_height + 2, m_width + 2);
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            tempInput[i + 1][j + 1]
+                = (double)m_InputImage[i * m_width + j];
+        }
+    }
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            MIN = 10000.0; // reset
+            for (n = 0; n<3; n++) {
+                for (m = 0; m<3; m++) {
+                    Mask[n * 3 + m] = tempInput[i + n][j + m];
+                    // 3*3 크기의 입력 값을 마스크 배열에 저장
+                }
+            }
+            for (h = 0; h<9; h++) {
+                if (Mask[h] < MIN) // 마스크에서 최소값을 구한다.
+                    MIN = Mask[h];
+            }
+            m_OutputImage[i * m_Re_width + j]
+                = (unsigned char)MIN; // 최소값 출력
+        }
+    }
 }

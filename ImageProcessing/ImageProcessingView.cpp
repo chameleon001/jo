@@ -73,6 +73,9 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_FRAME_AND, &CImageProcessingView::OnFrameAnd)
     ON_COMMAND(ID_FRAME_OR, &CImageProcessingView::OnFrameOr)
     ON_COMMAND(ID_FRAME_COMB, &CImageProcessingView::OnFrameComb)
+    ON_COMMAND(ID_BINARY_EROSION, &CImageProcessingView::OnBinaryErosion)
+    ON_COMMAND(ID_BINARY_DILATION, &CImageProcessingView::OnBinaryDilation)
+    ON_COMMAND(ID_GRAY_EROSION, &CImageProcessingView::OnGrayErosion)
 END_MESSAGE_MAP()
 
 // CImageProcessingView 생성/소멸 
@@ -708,4 +711,40 @@ void CImageProcessingView::OnDivConstant()
 
         Invalidate(TRUE);
 
+    }
+
+
+    void CImageProcessingView::OnBinaryErosion()
+    {
+        // TODO: 여기에 명령 처리기 코드를 추가합니다.
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnBinaryErosion();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnBinaryDilation()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnBinaryDilation();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnGrayErosion()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnGrayErosion();
+
+        Invalidate(TRUE);
     }

@@ -88,6 +88,9 @@ public:
      afx_msg void OnFrameAnd();
      afx_msg void OnFrameOr();
      afx_msg void OnFrameComb();
+     afx_msg void OnBinaryErosion();
+     afx_msg void OnBinaryDilation();
+     afx_msg void OnGrayErosion();
 };
 
 #ifndef _DEBUG  // ImageProcessingView.cpp의 디버그 버전

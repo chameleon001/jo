@@ -369,6 +369,12 @@ BEGIN
         MENUITEM "프레임 OR",                      ID_FRAME_OR
         MENUITEM "프레임 합성",                      ID_FRAME_COMB
     END
+    POPUP "형태학처리"
+    BEGIN
+        MENUITEM "이진 영상 침식 처리",                 ID_BINARY_EROSION
+        MENUITEM "이진 영상 팽창 처리",                 ID_BINARY_DILATION
+        MENUITEM "그레이 영상 침식 처리",                ID_GRAY_EROSION
+    END
 END
 
 IDR_POPUP_EDIT MENU
