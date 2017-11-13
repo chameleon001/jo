@@ -78,6 +78,8 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_GRAY_EROSION, &CImageProcessingView::OnGrayErosion)
     ON_COMMAND(ID_LOW_PASS_FILTER, &CImageProcessingView::OnLowPassFilter)
     ON_COMMAND(ID_HIGH_PASS_FILTER, &CImageProcessingView::OnHighPassFilter)
+    ON_COMMAND(ID_MEDIAN_FILTER, &CImageProcessingView::OnMedianFilter)
+    ON_COMMAND(ID_WeightMedianFilter, &CImageProcessingView::OnWeightmedianfilter)
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -769,6 +771,29 @@ void CImageProcessingView::OnDivConstant()
         ASSERT_VALID(pDoc);
 
         pDoc->OnHighPassFilter();
+
+        Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnMedianFilter()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnMedianFilter();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnWeightmedianfilter()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnWeightmedianfilter();
 
         Invalidate(TRUE);
     }

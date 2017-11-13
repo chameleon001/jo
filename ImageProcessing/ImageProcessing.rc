@@ -379,6 +379,8 @@ BEGIN
     BEGIN
         MENUITEM "저주파 통과 필터링",                  ID_LOW_PASS_FILTER
         MENUITEM "고주파 통과 필터링",                  ID_HIGH_PASS_FILTER
+        MENUITEM "중간 값 필터링",                    ID_MEDIAN_FILTER
+        MENUITEM "가중치중간값",                      ID_WeightMedianFilter
     END
 END
 

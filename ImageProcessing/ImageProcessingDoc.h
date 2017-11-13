@@ -131,4 +131,6 @@ public:
        afx_msg void OnGrayErosion();
        afx_msg void OnLowPassFilter();
        afx_msg void OnHighPassFilter();
+       afx_msg void OnMedianFilter();
+       afx_msg void OnWeightmedianfilter();
 };
