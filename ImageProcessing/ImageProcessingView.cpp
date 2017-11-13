@@ -80,6 +80,8 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_HIGH_PASS_FILTER, &CImageProcessingView::OnHighPassFilter)
     ON_COMMAND(ID_MEDIAN_FILTER, &CImageProcessingView::OnMedianFilter)
     ON_COMMAND(ID_WeightMedianFilter, &CImageProcessingView::OnWeightmedianfilter)
+    ON_COMMAND(ID_MAX_FILTER, &CImageProcessingView::OnMaxFilter)
+    ON_COMMAND(ID_MIN_FILTER, &CImageProcessingView::OnMinFilter)
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -796,4 +798,28 @@ void CImageProcessingView::OnDivConstant()
         pDoc->OnWeightmedianfilter();
 
         Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnMaxFilter()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnMaxFilter();
+
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnMinFilter()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnMinFilter();
+
+        Invalidate(TRUE);
+
     }

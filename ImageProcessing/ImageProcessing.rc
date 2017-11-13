@@ -381,6 +381,8 @@ BEGIN
         MENUITEM "고주파 통과 필터링",                  ID_HIGH_PASS_FILTER
         MENUITEM "중간 값 필터링",                    ID_MEDIAN_FILTER
         MENUITEM "가중치중간값",                      ID_WeightMedianFilter
+        MENUITEM "최대값 필터링",                     ID_MAX_FILTER
+        MENUITEM "최소값 필터링",                     ID_MIN_FILTER
     END
 END
 

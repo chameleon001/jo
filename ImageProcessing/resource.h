@@ -196,13 +196,17 @@
 #define ID_MEDIAN_FILTER                32871
 #define ID_32872                        32872
 #define ID_WeightMedianFilter           32873
+#define ID_32874                        32874
+#define ID_MAX_FILTER                   32875
+#define ID_32876                        32876
+#define ID_MIN_FILTER                   32877
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
-#define _APS_NEXT_COMMAND_VALUE         32874
+#define _APS_NEXT_COMMAND_VALUE         32878
 #define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

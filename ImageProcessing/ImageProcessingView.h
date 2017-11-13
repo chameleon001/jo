@@ -95,6 +95,8 @@ public:
      afx_msg void OnHighPassFilter();
      afx_msg void OnMedianFilter();
      afx_msg void OnWeightmedianfilter();
+     afx_msg void OnMaxFilter();
+     afx_msg void OnMinFilter();
 };
 
 #ifndef _DEBUG  // ImageProcessingView.cpp의 디버그 버전

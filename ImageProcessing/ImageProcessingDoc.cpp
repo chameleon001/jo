@@ -76,6 +76,8 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_HIGH_PASS_FILTER, &CImageProcessingDoc::OnHighPassFilter)
     ON_COMMAND(ID_MEDIAN_FILTER, &CImageProcessingDoc::OnMedianFilter)
     ON_COMMAND(ID_WeightMedianFilter, &CImageProcessingDoc::OnWeightmedianfilter)
+    ON_COMMAND(ID_MAX_FILTER, &CImageProcessingDoc::OnMaxFilter)
+    ON_COMMAND(ID_MIN_FILTER, &CImageProcessingDoc::OnMinFilter)
 END_MESSAGE_MAP()
 
 
@@ -2358,6 +2360,80 @@ void CImageProcessingDoc::OnWeightmedianfilter()
 
             m_OutputImage[index] = (unsigned char)Mask[5];
             // 중간 값 출력
+            index++; // 출력 배열의 좌표
+        }
+    }
+}
+
+
+void CImageProcessingDoc::OnMaxFilter()
+{
+    int i, j, n, m, index = 0;
+    double **tempInputImage, Mask[9];
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    tempInputImage = Image2DMem(m_height + 2, m_width + 2);
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            tempInputImage[i + 1][j + 1]
+                = (double)m_InputImage[i * m_width + j];
+        }
+    }
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            for (n = 0; n<3; n++) {
+                for (m = 0; m<3; m++) {
+                    Mask[n * 3 + m] = tempInputImage[i + n][j + m];
+                    // 3*3 크기 배열 값을 마스크 배열에 할당
+                }
+            }
+            OnBubleSort(Mask, 9); // 마스크 배열 값을 크기순으로 정렬
+            m_OutputImage[index] = (unsigned char)Mask[8];
+            // 최대값 출력
+            index++; // 출력 배열의 좌표
+        }
+    }
+
+
+}
+
+
+void CImageProcessingDoc::OnMinFilter()
+{
+    int i, j, n, m, index = 0;
+    double **tempInputImage, Mask[9];
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    tempInputImage = Image2DMem(m_height + 2, m_width + 2);
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            tempInputImage[i + 1][j + 1]
+                = (double)m_InputImage[i * m_width + j];
+        }
+    }
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            for (n = 0; n<3; n++) {
+                for (m = 0; m<3; m++) {
+                    Mask[n * 3 + m] = tempInputImage[i + n][j + m];
+                    // 3*3 크기 배열 값을 마스크 배열에 할당
+                }
+            }
+            OnBubleSort(Mask, 9); // 마스크 값을 크기순으로 정렬
+            m_OutputImage[index] = (unsigned char)Mask[0];
+            // 최소값 정렬
             index++; // 출력 배열의 좌표
         }
     }
