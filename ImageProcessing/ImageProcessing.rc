@@ -375,6 +375,11 @@ BEGIN
         MENUITEM "이진 영상 팽창 처리",                 ID_BINARY_DILATION
         MENUITEM "그레이 영상 침식 처리",                ID_GRAY_EROSION
     END
+    POPUP "필터링"
+    BEGIN
+        MENUITEM "저주파 통과 필터링",                  ID_LOW_PASS_FILTER
+        MENUITEM "고주파 통과 필터링",                  ID_HIGH_PASS_FILTER
+    END
 END
 
 IDR_POPUP_EDIT MENU

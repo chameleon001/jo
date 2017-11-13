@@ -129,4 +129,6 @@ public:
        afx_msg void OnBinaryErosion();
        afx_msg void OnBinaryDilation();
        afx_msg void OnGrayErosion();
+       afx_msg void OnLowPassFilter();
+       afx_msg void OnHighPassFilter();
 };

@@ -76,6 +76,8 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_BINARY_EROSION, &CImageProcessingView::OnBinaryErosion)
     ON_COMMAND(ID_BINARY_DILATION, &CImageProcessingView::OnBinaryDilation)
     ON_COMMAND(ID_GRAY_EROSION, &CImageProcessingView::OnGrayErosion)
+    ON_COMMAND(ID_LOW_PASS_FILTER, &CImageProcessingView::OnLowPassFilter)
+    ON_COMMAND(ID_HIGH_PASS_FILTER, &CImageProcessingView::OnHighPassFilter)
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -745,6 +747,28 @@ void CImageProcessingView::OnDivConstant()
         ASSERT_VALID(pDoc);
 
         pDoc->OnGrayErosion();
+
+        Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnLowPassFilter()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnLowPassFilter();
+
+        Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnHighPassFilter()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnHighPassFilter();
 
         Invalidate(TRUE);
     }

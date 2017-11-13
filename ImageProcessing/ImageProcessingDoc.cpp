@@ -72,6 +72,8 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_BINARY_EROSION, &CImageProcessingDoc::OnBinaryErosion)
     ON_COMMAND(ID_BINARY_DILATION, &CImageProcessingDoc::OnBinaryDilation)
     ON_COMMAND(ID_GRAY_EROSION, &CImageProcessingDoc::OnGrayErosion)
+    ON_COMMAND(ID_LOW_PASS_FILTER, &CImageProcessingDoc::OnLowPassFilter)
+    ON_COMMAND(ID_HIGH_PASS_FILTER, &CImageProcessingDoc::OnHighPassFilter)
 END_MESSAGE_MAP()
 
 
@@ -2206,6 +2208,74 @@ void CImageProcessingDoc::OnGrayErosion()
             }
             m_OutputImage[i * m_Re_width + j]
                 = (unsigned char)MIN; // 최소값 출력
+        }
+    }
+}
+
+
+void CImageProcessingDoc::OnLowPassFilter()
+{
+    int i, j;
+    double LPF[3][3] = { { 1. / 9., 1. / 9., 1. / 9. },
+    { 1. / 9., 1. / 9., 1. / 9. },
+    { 1. / 9., 1. / 9., 1. / 9. } };
+    //double LPF[3][3] = {{1./12.,1./12.,1./12.},  {1. / 12., 4. / 12., 1. / 12.},    { 1. / 12.,1. / 12.,1. / 12. }
+
+//double LPF[3][3] = {{1./18.,1./18.,1./18.},{1. / 18., 10. / 18., 1. / 18.},{ 1. / 18.,1. / 18.,1. / 18. }};
+// 저주파 필터 마스크
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    m_tempImage = OnMaskProcess(m_InputImage, LPF);
+// 입력 영상과 마스크를 이용한 회선 처리
+
+    for (i = 0; i < m_Re_height; i++) {
+        for (j = 0; j < m_Re_width; j++) {
+            if (m_tempImage[i][j] > 255)
+                // 회선 처리 결과 값이 0~255 사이의 값이 아닐 때 
+                // 0보다 작으면 0을,
+                // 255보다 크면 255를 출력
+                m_OutputImage[i*   m_Re_width + j] = 255;
+            else if (m_tempImage[i][j] < 0)
+                m_OutputImage[i*   m_Re_width + j] = 0;
+            else
+                m_OutputImage[i*   m_Re_width + j]
+                = (unsigned char)m_tempImage[i][j];
+         }
+    }
+}
+
+
+void CImageProcessingDoc::OnHighPassFilter()
+{
+    int i, j;
+    double HPF[3][3] = { { -1. / 9., -1. / 9., -1. / 9. },
+    { -1. / 9., 8 / 9., -1. / 9. },
+    { -1. / 9., -1. / 9., -1. / 9. } };
+    //double HPF[3][3] = {{-1., -1., -1.},    {-1., 9., -1.},    { -1., -1., -1. }};
+// 고주파 필터 마스크
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    m_tempImage = OnMaskProcess(m_InputImage, HPF);
+    for (i = 0; i< m_Re_height; i++) {
+        for (j = 0; j< m_Re_width; j++) {
+            // 회선 처리 결과 값이 0~255 사이의 값이 아닐 때 
+            // 0보다 작으면 0을,
+            // 255보다 크면 255를 출력
+            if (m_tempImage[i][j] > 255)
+                m_OutputImage[i*   m_Re_width + j] = 255;
+            else if (m_tempImage[i][j] < 0)
+                m_OutputImage[i*   m_Re_width + j] = 0;
+            else
+                m_OutputImage[i*   m_Re_width + j]
+                = (unsigned char)m_tempImage[i][j];
         }
     }
 }
