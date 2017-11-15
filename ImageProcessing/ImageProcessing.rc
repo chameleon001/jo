@@ -384,6 +384,11 @@ BEGIN
         MENUITEM "최대값 필터링",                     ID_MAX_FILTER
         MENUITEM "최소값 필터링",                     ID_MIN_FILTER
     END
+    POPUP "체인"
+    BEGIN
+        MENUITEM "체인",                          ID_Chaincodes
+        MENUITEM "코너",                          ID_Corners
+    END
 END
 
 IDR_POPUP_EDIT MENU

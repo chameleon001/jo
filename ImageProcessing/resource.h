@@ -200,13 +200,18 @@
 #define ID_MAX_FILTER                   32875
 #define ID_32876                        32876
 #define ID_MIN_FILTER                   32877
+#define ID_32878                        32878
+#define ID_Chaincodes                   32879
+#define ID_32880                        32880
+#define ID_Draw                         32881
+#define ID_Corners                      32882
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        324
-#define _APS_NEXT_COMMAND_VALUE         32878
+#define _APS_NEXT_COMMAND_VALUE         32883
 #define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

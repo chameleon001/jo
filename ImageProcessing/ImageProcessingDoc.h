@@ -25,6 +25,11 @@ public:
     double m_Sum_Of_HIST[256];
     unsigned char m_Scale_HIST[256];
     double** m_tempImage;
+    CPoint EG[2000]; //경계선상의 점들
+    int n_eg; //경계선상 점의 수
+    int BP[500], n_bp; //코너점의 index, 코너점의 개수
+
+    
 
 // 작업입니다.
 public:
@@ -48,7 +53,7 @@ public:
     double ** OnMaskProcess(unsigned char * Target, double Mask[3][3]);
     double ** OnScale(double ** Target, int height, int width);
     double ** Image2DMem(int height, int width);
-
+   
 // 재정의입니다.
 public:
 	virtual BOOL OnNewDocument();
@@ -135,4 +140,7 @@ public:
        afx_msg void OnWeightmedianfilter();
        afx_msg void OnMaxFilter();
        afx_msg void OnMinFilter();
+       afx_msg void OnChaincodes();
+       void GetCorners(CPoint * EG, int st, int en);
+       void OnCorners();
 };

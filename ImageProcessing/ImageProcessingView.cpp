@@ -82,6 +82,9 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_WeightMedianFilter, &CImageProcessingView::OnWeightmedianfilter)
     ON_COMMAND(ID_MAX_FILTER, &CImageProcessingView::OnMaxFilter)
     ON_COMMAND(ID_MIN_FILTER, &CImageProcessingView::OnMinFilter)
+    ON_COMMAND(ID_Chaincodes, &CImageProcessingView::OnChaincodes)
+    ON_COMMAND(ID_Corners, &CImageProcessingView::OnCorners)
+    
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -108,6 +111,7 @@ BOOL CImageProcessingView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CImageProcessingView::OnDraw(CDC* pDC)
 {
+    int n, x, y;
 	CImageProcessingDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
@@ -133,6 +137,13 @@ void CImageProcessingView::OnDraw(CDC* pDC)
 			pDC->SetPixel(j + pDoc->m_width + 10, i + 5, RGB(R, G, B));
 		}
 	}
+    if (pDoc->n_bp>0) {
+        for (i = 0; i<pDoc->n_bp; i++) {
+            n = pDoc->BP[i];
+            x = pDoc->EG[n].x + pDoc->m_width + 10; y = pDoc->EG[n].y + 5;
+            pDC->Ellipse(x - 3, y - 3, x + 3, y + 3);
+        }
+    }
 
 }
 
@@ -822,4 +833,40 @@ void CImageProcessingView::OnDivConstant()
 
         Invalidate(TRUE);
 
+    }
+
+
+    void CImageProcessingView::OnChaincodes()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnChaincodes();
+
+        Invalidate(TRUE);
+    }
+    /*
+    void CImageProcessingView::OnDraw(CDC* pDC)
+    {
+        int n, x, y;
+        CImageProcessingDoc* pDoc = GetDocument();
+
+        if (pDoc->n_bp>0) {
+            for (int i = 0; i<pDoc->n_bp; i++) {
+                n = pDoc->BP[i];
+                x = pDoc->EG[n].x + pDoc->m_width + 10; y = pDoc->EG[n].y + 5;
+                pDC->Ellipse(x - 3, y - 3, x + 3, y + 3);
+            }
+        }
+    }
+    */
+
+    void CImageProcessingView::OnCorners()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnCorners();
+
+        Invalidate(TRUE);
     }

@@ -78,6 +78,9 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_WeightMedianFilter, &CImageProcessingDoc::OnWeightmedianfilter)
     ON_COMMAND(ID_MAX_FILTER, &CImageProcessingDoc::OnMaxFilter)
     ON_COMMAND(ID_MIN_FILTER, &CImageProcessingDoc::OnMinFilter)
+    ON_COMMAND(ID_Chaincodes, &CImageProcessingDoc::OnChaincodes)
+    ON_COMMAND(ID_Corners, &CImageProcessingDoc::OnCorners)
+    
 END_MESSAGE_MAP()
 
 
@@ -2437,4 +2440,108 @@ void CImageProcessingDoc::OnMinFilter()
             index++; // 출력 배열의 좌표
         }
     }
+}
+
+
+void CImageProcessingDoc::OnChaincodes()
+{
+    int i, j;
+    const POINT nei[8] = { { -1,0 },{ -1,-1 },{ 0,-1 },{ 1,-1 },{ 1,0 },{ 1,1 },{ 0,1 },{ -1,1 } };
+    int x0, y0, x, y, k, n, u, v;
+    int sh;
+    double **tempInput;
+
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+
+    m_OutputImage = new unsigned char[m_Re_size];
+
+    tempInput = Image2DMem(m_height, m_width);
+
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            tempInput[j][i]
+                = (double)m_InputImage[i * m_width + j];
+        }
+    }
+
+    for (x = 1; x<m_width; x++) { //첫번째 점 찾기
+        for (y = 1; y<m_height; y++) {
+            if (tempInput[x][y]>128) break;
+        }
+        if (tempInput[x][y]>128) break;
+    }
+
+    n_eg = 0;		// 경계점의 개수를 세기 위한 카운터
+    x0 = x;	y0 = y;
+    n = 1;				// 관심점 주위에서 같은 컬러를 가진 경계점을 찾기 위함
+    do {
+        EG[n_eg].x = x;
+        EG[n_eg++].y = y;
+        for (k = 0; k<8; k++, n = ((n + 1) & 7)) {
+            u = x + nei[n].x;
+            v = y + nei[n].y;
+            if (u<0 || u >= m_width || v<0 || v >= m_height) continue;
+            if (tempInput[u][v]>128) break;
+        }
+        if (k == 8) break;
+        x = x + nei[n].x;
+        y = y + nei[n].y;
+        n = (n + 5) & 7;
+    } while (!(x == x0 && y == y0));	// 루프를 돌다 출발점을 만나면 빠져나옴
+
+    for (i = 0; i<m_size; i++) m_OutputImage[i] = 0;
+
+    for (i = 0; i<n_eg; i++) {
+        m_OutputImage[EG[i].y* m_width + EG[i].x] = 255; //경계선출력
+    }
+}
+
+void CImageProcessingDoc::GetCorners(CPoint* EG, int st, int en)
+{
+    float err = 2, min_d = 5;
+    float t, p, t1, l, d;
+    float Tx, Ty;
+    int brkp = -1;
+    CPoint P, T, T1, B(EG[st].x, EG[st].y), E(EG[en].x, EG[en].y);
+    float max_d = err;
+    T = E - B;
+
+    t = sqrt((float)(T.x*T.x + T.y*T.y)); //T의 scalar 값=길이
+                                          //길이가 sampling 거리보다 작거나 사이에 점이 없으면 마지막 점을 특징점(breakpoint)으로
+    if ((t<min_d && en - st<min_d) || (en - st<2)) {
+        BP[n_bp++] = en;
+    }
+    else { //아니면 
+        Tx = T.x / t;  // 시작 끝점간 단위벡터
+        Ty = T.y / t;
+        //시작 끝점간 벡터로 부터 최대 유클리디안 거리 검사하여 breakpoint 찾기
+        for (int j = st + 1; j<en; j++) {
+            P = EG[j] - B; //첫점으로부터 현재점에 이르는 벡터
+            T = EG[j] - E;
+            p = sqrt((float)(P.x*P.x + P.y*P.y));
+            t = sqrt((float)(T.x*T.x + T.y*T.y));
+            if (p>min_d && t>min_d) {
+                d = Tx*P.y - Ty*P.x; if (d<0) d = -d;
+                if (d>max_d) {
+                    max_d = d;
+                    brkp = j;
+                }
+            }
+        }
+        if ((brkp != -1)) {
+            GetCorners(EG, st, brkp); //breakpoint 기준으로 다시 나누기
+            GetCorners(EG, brkp, en);
+        }
+        else {
+            BP[n_bp++] = en;
+        }
+    }
+}
+
+void CImageProcessingDoc::OnCorners() {
+    OnChaincodes();
+    n_bp = 0;
+    GetCorners(EG, 0, n_eg - 1);
 }
