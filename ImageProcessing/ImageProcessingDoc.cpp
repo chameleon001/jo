@@ -2500,7 +2500,8 @@ void CImageProcessingDoc::OnChaincodes()
 
 void CImageProcessingDoc::GetCorners(CPoint* EG, int st, int en)
 {
-    float err = 2, min_d = 5;
+    float err = 20, min_d = 5;
+    //err : 에러값 숫자 적게줄수록 점 많이생김
     float t, p, t1, l, d;
     float Tx, Ty;
     int brkp = -1;
