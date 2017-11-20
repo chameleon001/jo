@@ -91,8 +91,10 @@
 #define IDD_DIALOG5                     318
 #define IDD_DIALOG6                     320
 #define IDD_DIALOG7                     322
+#define IDD_DIALOG8                     324
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
+#define IDC_SMODING                     1002
 #define ID_32771                        32771
 #define ID_UP_SAMPLE                    32772
 #define ID_                             32773
@@ -205,14 +207,23 @@
 #define ID_32880                        32880
 #define ID_Draw                         32881
 #define ID_Corners                      32882
+#define ID_32883                        32883
+#define ID_WEIGHTED_M                   32884
+#define ID_WEIGHTED_MEDIAN              32885
+#define ID_32886                        32886
+#define ID_LINESMOOTHING                32887
+#define ID_32888                        32888
+#define ID_FFT_2D                       32889
+#define ID_32890                        32890
+#define ID_IFFT_2D                      32891
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        324
-#define _APS_NEXT_COMMAND_VALUE         32883
-#define _APS_NEXT_CONTROL_VALUE         1002
+#define _APS_NEXT_RESOURCE_VALUE        326
+#define _APS_NEXT_COMMAND_VALUE         32892
+#define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

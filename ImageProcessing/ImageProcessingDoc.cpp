@@ -17,7 +17,7 @@
 #include "QuantizationDlg.h"
 #include "math.h"
 #include "ConstantDlg.h"
-
+#include "sm_dlg.h"
 #include <propkey.h>
 
 #ifdef _DEBUG
@@ -81,6 +81,10 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_Chaincodes, &CImageProcessingDoc::OnChaincodes)
     ON_COMMAND(ID_Corners, &CImageProcessingDoc::OnCorners)
     
+    
+    ON_COMMAND(ID_LINESMOOTHING, &CImageProcessingDoc::OnLinesmoothing)
+    ON_COMMAND(ID_FFT_2D, &CImageProcessingDoc::OnFft2d)
+    ON_COMMAND(ID_IFFT_2D, &CImageProcessingDoc::OnIfft2d)
 END_MESSAGE_MAP()
 
 
@@ -2470,7 +2474,7 @@ void CImageProcessingDoc::OnChaincodes()
         for (y = 1; y<m_height; y++) {
             if (tempInput[x][y]>128) break;
         }
-        if (tempInput[x][y]>128) break;
+        if (y<m_height && tempInput[x][y]>128) break;
     }
 
     n_eg = 0;		// 경계점의 개수를 세기 위한 카운터
@@ -2542,7 +2546,331 @@ void CImageProcessingDoc::GetCorners(CPoint* EG, int st, int en)
 }
 
 void CImageProcessingDoc::OnCorners() {
-    OnChaincodes();
-    n_bp = 0;
-    GetCorners(EG, 0, n_eg - 1);
+    
 }
+
+
+void CImageProcessingDoc::OnLinesmoothing()
+{
+    struct Edge {
+        float x, y;
+    } E1[2000], E2[2000];
+    int i, j, n = 300;
+    int x1, y1;
+
+
+    sm_dlg dlg;
+    if (dlg.DoModal() == IDOK) {
+        n = dlg.n_input;
+        m_Re_height = m_height;
+        m_Re_width = m_width;
+        m_Re_size = m_Re_height * m_Re_width;
+
+        m_OutputImage = new unsigned char[m_Re_size];
+
+        OnChaincodes();
+
+        for (i = 0; i < n_eg; i++) { E1[i].x = EG[i].x; E1[i].y = EG[i].y; }
+        E1[n_eg].x = E1[0].x; E1[n_eg].y = E1[0].y;
+        E1[n_eg + 1].x = E1[1].x; E1[n_eg + 1].y = E1[1].y;
+
+        for (j = 0; j < n; j++) {
+            for (i = 1; i <= n_eg; i++) {
+                E2[i].x = (E1[i - 1].x + E1[i].x + E1[i + 1].x) / 3;
+                E2[i].y = (E1[i - 1].y + E1[i].y + E1[i + 1].y) / 3;
+            }
+            for (i = 1; i <= n_eg; i++) { E1[i].x = E2[i].x; E1[i].y = E2[i].y; }
+            E1[0].x = E1[n_eg].x; E1[0].y = E1[n_eg].y;
+            E1[n_eg + 1].x = E1[1].x; E1[n_eg + 1].y = E1[1].y;
+        }
+
+        for (i = 0; i < m_Re_size; i++) m_OutputImage[i] = 0;
+
+        for (i = 0; i < n_eg; i++) {
+            x1 = (int)E1[i].x; y1 = (int)E1[i].y;
+            m_OutputImage[y1* m_width + x1] = 255; //경계선출력
+        }
+
+    }
+}
+
+
+void CImageProcessingDoc::OnFft2d()
+{
+    int i, j, row, col, Log2N, Num;
+    Complex *Data;
+    unsigned char **temp;
+    double Value, Absol;
+
+    Num = m_width;
+    Log2N = 0;
+
+    while (Num >= 2) // 영상의 너비 계산
+    {
+        Num >>= 1;
+        Log2N++;
+    }
+    m_Re_height = m_height;
+    m_Re_width = m_width;
+    m_Re_size = m_Re_height * m_Re_width;
+    m_OutputImage = new unsigned char[m_Re_size];
+    m_tempImage = Image2DMem(m_height, m_width); // 기억 장소 할당
+
+    Data = new Complex[m_width];
+    m_FFT = new Complex *[m_height];
+    // 주파수 영역 변환 영상을 저장하기 위한 배열
+    temp = new unsigned char *[m_height];
+
+    for (i = 0; i<m_height; i++) {
+        m_FFT[i] = new Complex[m_width];
+        temp[i] = new unsigned char[m_width];
+    }
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            Data[j].Re = (double)m_InputImage[i*m_width + j];
+            // 입력의 한 행을 복사, 실수 성분 값은 영상의 값
+            Data[j].Im = 0.0; // 복소 성분 값은 0
+        }
+        OnFft1d(Data, m_width, Log2N); // 1차원 FFT
+        for (j = 0; j<m_width; j++) { // 결과 저장
+            m_FFT[i][j].Re = Data[j].Re;
+            m_FFT[i][j].Im = Data[j].Im;
+        }
+    }
+
+    Num = m_height;
+    Log2N = 0;
+
+    while (Num >= 2) // 영상의 높이 계산
+    {
+        Num >>= 1;
+        Log2N++;
+    }
+
+    Data = new Complex[m_height];
+
+    for (i = 0; i<m_width; i++) {
+        for (j = 0; j<m_height; j++) {
+            Data[j].Re = m_FFT[j][i].Re; // 영상의 한 열을 복사
+            Data[j].Im = m_FFT[j][i].Im;
+        }
+
+        OnFft1d(Data, m_height, Log2N); // 1차원 FFT
+
+        for (j = 0; j<m_height; j++) { // 결과 저장
+            m_FFT[j][i].Re = Data[j].Re;
+            m_FFT[j][i].Im = Data[j].Im;
+        }
+    }
+    // FFT 실행 결과를 영상으로 출력하기 위한 연산
+    for (i = 0; i<m_height; i++) {
+        for (j = 0; j<m_width; j++) {
+            Value = sqrt((m_FFT[i][j].Re * m_FFT[i][j].Re) +
+                (m_FFT[i][j].Im * m_FFT[i][j].Im));
+            Absol = 20 * log(Value);
+
+            if (Absol > 255.0)
+                Absol = 255.0;
+            if (Absol < 0.0)
+                Absol = 0.0;
+            m_tempImage[i][j] = Absol;
+        }
+    }
+
+    // 셔플링 과정 : 영상을 4등분하고 분할된 영상을 상하 대칭 및 좌우 대칭
+    for (i = 0; i<m_height; i += m_height / 2) {
+        for (int j = 0; j<m_width; j += m_width / 2) {
+            for (row = 0; row<m_height / 2; row++) {
+                for (col = 0; col<m_width / 2; col++) {
+                    temp[(m_height / 2 - 1) - row + i][(m_width / 2 - 1) - col + j]
+                        = (unsigned char)m_tempImage[i + row][j + col];
+                }
+            }
+        }
+    }
+
+    for (i = 0; i < m_height; i++) {
+        for (j = 0; j < m_width; j++) {
+            m_OutputImage[i*m_width + j] = temp[i][j];
+        }
+    }
+
+    delete[] Data, **temp;
+
+
+}
+
+void CImageProcessingDoc::OnFft1d(Complex *X, int N, int Log2N)
+{
+    // 1차원 fft를 위한 함수
+    OnShuffle(X, N, Log2N); // 함수 호출
+    OnButterfly(X, N, Log2N, 1); // 함수 호출
+}
+
+
+void CImageProcessingDoc::OnShuffle(Complex *X, int N, int Log2N)
+{
+    // 입력 데이터의 순서를 바구기 위한 함수
+    int i;
+    Complex *temp;
+
+    temp = new Complex[N];
+
+    for (i = 0; i<N; i++) {
+        temp[i].Re = X[OnReverseBitOrder(i, Log2N)].Re;
+        temp[i].Im = X[OnReverseBitOrder(i, Log2N)].Im;
+    }
+
+    for (i = 0; i<N; i++) {
+        X[i].Re = temp[i].Re;
+        X[i].Im = temp[i].Im;
+    }
+    delete[] temp;
+}
+
+
+void CImageProcessingDoc::OnButterfly(Complex *X, int N,
+    int Log2N, int mode)
+{
+    // 나비(Butterfly) 구조를 위한 함수
+    int i, j, k, m;
+
+    int start;
+    double Value;
+    double PI = 3.14159265358979;
+
+    Complex *Y, temp;
+
+    Y = new Complex[N / 2];
+
+    for (i = 0; i<Log2N; i++) {
+        Value = pow(2.0, i + 1);
+
+        if (mode == 1) {
+            for (j = 0; j<(int)(Value / 2); j++) {
+                Y[j].Re = cos(j*2.0*PI / Value);
+                Y[j].Im = -sin(j*2.0*PI / Value);
+            }
+        }
+
+        if (mode == 2) {
+            for (j = 0; j<(int)(Value / 2); j++) {
+                Y[j].Re = cos(j*2.0*PI / Value);
+                Y[j].Im = sin(j*2.0*PI / Value);
+            }
+        }
+
+        start = 0;
+
+        for(k = 0; k < N/(int)Value; k++) {
+            for (j = start; j<start + (int)(Value / 2); j++) {
+                m = j + (int)(Value / 2);
+                temp.Re = Y[j - start].Re * X[m].Re - Y[j - start].Im * X[m].Im;
+                temp.Im = Y[j - start].Im * X[m].Re + Y[j - start].Re * X[m].Im;
+
+                X[m].Re = X[j].Re - temp.Re;
+                X[m].Im = X[j].Im - temp.Im;
+
+                X[j].Re = X[j].Re + temp.Re;
+                X[j].Im = X[j].Im + temp.Im;
+            }
+            start = start + (int)Value;
+        }
+    }
+
+    if (mode == 2) {
+        for (i = 0; i<N; i++) {
+            X[i].Re = X[i].Re / N;
+            X[i].Im = X[i].Im / N;
+        }
+    }
+    delete[] Y;
+}
+
+int CImageProcessingDoc::OnReverseBitOrder(int index, int Log2N)
+{
+    int i, X, Y;
+    Y = 0;
+    for (i = 0; i<Log2N; i++) {
+        X = (index & (1 << i)) >> i;
+        Y = (Y << 1) | X;
+    }
+    return Y;
+}
+
+
+
+
+void CImageProcessingDoc::OnIfft2d()
+{
+    int i, j, Num, Log2N;
+    Complex *Data;
+
+    Num = m_width;
+    Log2N = 0;
+    while (Num >= 2) // 주파수 변환된 영상의 너비 계산
+    {
+        Num >>= 1;
+        Log2N++;
+    }
+
+    Data = new Complex[m_height];
+    m_IFFT = new Complex *[m_height]; // 역변환된 영상을 위한 배열
+
+    for (i = 0; i<m_height; i++) {
+        m_IFFT[i] = new Complex[m_width];
+    }
+
+    for (i = 0; i< m_height; i++) {
+        for (j = 0; j<m_width; j++) { // 한 행을 복사
+            Data[j].Re = m_FFT[i][j].Re;
+            Data[j].Im = m_FFT[i][j].Im;
+        }
+
+        OnIfft1d(Data, m_width, Log2N); // 1차원 IFFT
+        for (j = 0; j<m_width; j++) {
+            m_IFFT[i][j].Re = Data[j].Re; // 결과 저장
+            m_IFFT[i][j].Im = Data[j].Im;
+        }
+    }
+
+    Num = m_height;
+    Log2N = 0;
+    while (Num >= 2) // 주파수 변환된 영상의 높이 계산
+    {
+        Num >>= 1;
+        Log2N++;
+    }
+
+    Data = new Complex[m_height];
+
+    for (i = 0; i<m_width; i++) {
+        for (j = 0; j<m_height; j++) {
+            Data[j].Re = m_IFFT[j][i].Re; // 한 열을 복사
+            Data[j].Im = m_IFFT[j][i].Im;
+        }
+
+        OnIfft1d(Data, m_height, Log2N); // 1차원 IFFT
+
+        for (j = 0; j<m_height; j++) {
+            m_IFFT[j][i].Re = Data[j].Re; // 결과 저장
+            m_IFFT[j][i].Im = Data[j].Im;
+        }
+    }
+
+    for (i = 0; i<m_width; i++) {
+        for (j = 0; j<m_height; j++) {
+            m_OutputImage[i*m_width + j]
+                = (unsigned char)m_IFFT[i][j].Re;
+            // 결과 출력
+        }
+    }
+    delete[] Data;
+}
+
+void CImageProcessingDoc::OnIfft1d(Complex *X, int N, int Log2N)
+{
+    OnShuffle(X, N, Log2N);
+    OnButterfly(X, N, Log2N, 2);
+}
+

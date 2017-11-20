@@ -85,6 +85,9 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_Chaincodes, &CImageProcessingView::OnChaincodes)
     ON_COMMAND(ID_Corners, &CImageProcessingView::OnCorners)
     
+    ON_COMMAND(ID_LINESMOOTHING, &CImageProcessingView::OnLinesmoothing)
+    ON_COMMAND(ID_FFT_2D, &CImageProcessingView::OnFft2d)
+    ON_COMMAND(ID_IFFT_2D, &CImageProcessingView::OnIfft2d)
 END_MESSAGE_MAP()
 
 // CImageProcessingView »ý¼º/¼Ò¸ê 
@@ -869,4 +872,36 @@ void CImageProcessingView::OnDivConstant()
         pDoc->OnCorners();
 
         Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnLinesmoothing()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+
+        pDoc->OnLinesmoothing();
+
+        Invalidate(TRUE);
+    }
+
+
+ 
+    
+    void CImageProcessingView::OnFft2d()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+        pDoc->OnFft2d();
+        Invalidate(TRUE);
+    }
+
+
+    void CImageProcessingView::OnIfft2d()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        ASSERT_VALID(pDoc);
+        pDoc->OnIfft2d();
+        Invalidate(TRUE);
+
     }

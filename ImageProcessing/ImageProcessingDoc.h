@@ -28,8 +28,14 @@ public:
     CPoint EG[2000]; //경계선상의 점들
     int n_eg; //경계선상 점의 수
     int BP[500], n_bp; //코너점의 index, 코너점의 개수
-
     
+    struct Complex {
+        double Re; // 실수를 위한 변수
+        double Im; // 허수를 위한 변수
+    };
+    Complex **m_FFT;
+    Complex **m_IFFT;
+
 
 // 작업입니다.
 public:
@@ -143,4 +149,13 @@ public:
        afx_msg void OnChaincodes();
        void GetCorners(CPoint * EG, int st, int en);
        void OnCorners();
+      
+       afx_msg void OnLinesmoothing();
+       afx_msg void OnFft2d();
+       void OnFft1d(Complex * X, int N, int Log2N);
+       void OnShuffle(Complex * X, int N, int Log2N);
+       void OnButterfly(Complex * X, int N, int Log2N, int mode);
+       int OnReverseBitOrder(int index, int Log2N);
+       afx_msg void OnIfft2d();
+       void OnIfft1d(Complex * X, int N, int Log2N);
 };

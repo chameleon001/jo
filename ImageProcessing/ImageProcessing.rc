@@ -256,7 +256,7 @@ BEGIN
         MENUITEM "인쇄 미리 보기(&V)",                ID_FILE_PRINT_PREVIEW
         MENUITEM "인쇄 설정(&R)...",                ID_FILE_PRINT_SETUP
         MENUITEM SEPARATOR
-        MENUITEM "최근에 사용한 파일",                  ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM "최근에 사용한 파일",                  ID_FILE_MRU_FILE1
         MENUITEM SEPARATOR
         MENUITEM "끝내기(&X)",                     ID_APP_EXIT
     END
@@ -383,11 +383,17 @@ BEGIN
         MENUITEM "가중치중간값",                      ID_WeightMedianFilter
         MENUITEM "최대값 필터링",                     ID_MAX_FILTER
         MENUITEM "최소값 필터링",                     ID_MIN_FILTER
+        MENUITEM "선스무딩",                        ID_LINESMOOTHING
     END
     POPUP "체인"
     BEGIN
         MENUITEM "체인",                          ID_Chaincodes
         MENUITEM "코너",                          ID_Corners
+    END
+    POPUP "영상변환"
+    BEGIN
+        MENUITEM "2차원 FFT",                     ID_FFT_2D
+        MENUITEM "2차원 IFFT",                    ID_IFFT_2D
     END
 END
 
@@ -574,6 +580,17 @@ BEGIN
     LTEXT           "각도",IDC_STATIC,64,63,16,8
 END
 
+IDD_DIALOG8 DIALOGEX 0, 0, 309, 176
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "확인",IDOK,198,155,50,14
+    PUSHBUTTON      "취소",IDCANCEL,252,155,50,14
+    EDITTEXT        IDC_SMODING,155,57,40,14,ES_AUTOHSCROLL
+    LTEXT           "n값 변경 ",IDC_STATIC,112,60,29,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -685,6 +702,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 169
     END
+
+    IDD_DIALOG8, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 169
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -725,6 +750,11 @@ BEGIN
 END
 
 IDD_DIALOG7 AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DIALOG8 AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
