@@ -186,6 +186,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArrangeDLg.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="ConstantDlg.h" />
@@ -206,8 +207,10 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="UpSampleDlg.h" />
     <ClInclude Include="ViewTree.h" />
+    <ClInclude Include="WaveletTransformDlg.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArrangeDLg.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="ClassView.cpp" />
     <ClCompile Include="ConstantDlg.cpp" />
@@ -231,6 +234,7 @@
     </ClCompile>
     <ClCompile Include="UpSampleDlg.cpp" />
     <ClCompile Include="ViewTree.cpp" />
+    <ClCompile Include="WaveletTransformDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ImageProcessing.reg" />

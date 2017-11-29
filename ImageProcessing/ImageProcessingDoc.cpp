@@ -85,6 +85,7 @@ BEGIN_MESSAGE_MAP(CImageProcessingDoc, CDocument)
     ON_COMMAND(ID_LINESMOOTHING, &CImageProcessingDoc::OnLinesmoothing)
     ON_COMMAND(ID_FFT_2D, &CImageProcessingDoc::OnFft2d)
     ON_COMMAND(ID_IFFT_2D, &CImageProcessingDoc::OnIfft2d)
+    ON_COMMAND(ID_WAVELET_TRANSFORM, &CImageProcessingDoc::OnWaveletTransform)
 END_MESSAGE_MAP()
 
 
@@ -2874,3 +2875,13 @@ void CImageProcessingDoc::OnIfft1d(Complex *X, int N, int Log2N)
     OnButterfly(X, N, Log2N, 2);
 }
 
+
+
+void CImageProcessingDoc::OnWaveletTransform()
+{
+    m_OutputImage = new unsigned char[m_size];
+    pDlg = new CWaveletTransformDlg(this);
+    if (pDlg->GetSafeHwnd() == NULL) pDlg->Create(IDD_WAVELET_DLG);
+    pDlg->ShowWindow(SW_SHOW);
+
+}

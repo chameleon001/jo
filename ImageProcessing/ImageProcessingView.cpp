@@ -88,6 +88,7 @@ BEGIN_MESSAGE_MAP(CImageProcessingView, CView)
     ON_COMMAND(ID_LINESMOOTHING, &CImageProcessingView::OnLinesmoothing)
     ON_COMMAND(ID_FFT_2D, &CImageProcessingView::OnFft2d)
     ON_COMMAND(ID_IFFT_2D, &CImageProcessingView::OnIfft2d)
+    ON_COMMAND(ID_WAVELET_TRANSFORM, &CImageProcessingView::OnWaveletTransform)
 END_MESSAGE_MAP()
 
 // CImageProcessingView 생성/소멸 
@@ -902,6 +903,15 @@ void CImageProcessingView::OnDivConstant()
         CImageProcessingDoc* pDoc = GetDocument();
         ASSERT_VALID(pDoc);
         pDoc->OnIfft2d();
+        Invalidate(TRUE);
+
+    }
+
+
+    void CImageProcessingView::OnWaveletTransform()
+    {
+        CImageProcessingDoc* pDoc = GetDocument();
+        pDoc->OnWaveletTransform(); // Doc 클래스에서 생성해야 할 함수 이름
         Invalidate(TRUE);
 
     }

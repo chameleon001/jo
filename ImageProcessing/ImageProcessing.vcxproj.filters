@@ -78,6 +78,12 @@
     <ClInclude Include="sm_dlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="WaveletTransformDlg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrangeDLg.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImageProcessing.cpp">
@@ -132,6 +138,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="sm_dlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveletTransformDlg.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrangeDLg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -2,6 +2,14 @@
 // ImageProcessingDoc.h : CImageProcessingDoc 클래스의 인터페이스
 //
 
+// ImageProcessingmDoc.h : interface of the CWaveletTransformDoc class
+//////////////////////////////////////////////////////////////
+#if !defined (AFX_WAVELETTRANSFORMDOC_H__4A38BAEB_E3CB_44C9_B2CB_057CD4D9FF0A__INCLUDED_)
+#define AFX_WAVELETTRANSFORMDOC_H__4A38BAEB_E3CB_44C9_B2CB_057CD4D9FF0A__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
 
 #pragma once
 
@@ -10,7 +18,10 @@ class CImageProcessingDoc : public CDocument
 {
 protected: // serialization에서만 만들어집니다.
 	CImageProcessingDoc();
-	DECLARE_DYNCREATE(CImageProcessingDoc)
+    DECLARE_DYNCREATE(CImageProcessingDoc)
+    CWaveletTransformDoc();
+    DECLARE_DYNCREATE(CWaveletTransformDoc)
+   
 
 // 특성입니다.
 public:
@@ -19,7 +30,7 @@ public:
 
 	unsigned char* m_OutputImage; //Output이미지 추가
 	int m_Re_width, m_Re_height, m_Re_size;
-
+    unsigned char **m_ArrangeImage;
     unsigned char *m_InputImage2, *m_OutputImage2;
     double m_HIST[256];
     double m_Sum_Of_HIST[256];
@@ -35,7 +46,7 @@ public:
     };
     Complex **m_FFT;
     Complex **m_IFFT;
-
+    CWaveletTransformDlg *pDlg;
 
 // 작업입니다.
 public:
@@ -158,4 +169,5 @@ public:
        int OnReverseBitOrder(int index, int Log2N);
        afx_msg void OnIfft2d();
        void OnIfft1d(Complex * X, int N, int Log2N);
+       afx_msg void OnWaveletTransform();
 };

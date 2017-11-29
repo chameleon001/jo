@@ -103,6 +103,7 @@ public:
      afx_msg void OnLinesmoothing();
      afx_msg void OnFft2d();
      afx_msg void OnIfft2d();
+     afx_msg void OnWaveletTransform();
 };
 
 #ifndef _DEBUG  // ImageProcessingView.cpp의 디버그 버전
