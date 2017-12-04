@@ -93,7 +93,6 @@
 #define IDD_DIALOG7                     322
 #define IDD_DIALOG8                     324
 #define IDD_WAVELET_DLG                 326
-#define IDD_DIALOG9                     328
 #define IDD_ARRANGE                     328
 #define IDC_EDIT1                       1000
 #define IDC_EDIT2                       1001
@@ -234,7 +233,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        330
+#define _APS_NEXT_RESOURCE_VALUE        332
 #define _APS_NEXT_COMMAND_VALUE         32894
 #define _APS_NEXT_CONTROL_VALUE         1010
 #define _APS_NEXT_SYMED_VALUE           310

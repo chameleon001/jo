@@ -5,6 +5,7 @@
 // ImageProcessingmDoc.h : interface of the CWaveletTransformDoc class
 //////////////////////////////////////////////////////////////
 #if !defined (AFX_WAVELETTRANSFORMDOC_H__4A38BAEB_E3CB_44C9_B2CB_057CD4D9FF0A__INCLUDED_)
+#endif
 #define AFX_WAVELETTRANSFORMDOC_H__4A38BAEB_E3CB_44C9_B2CB_057CD4D9FF0A__INCLUDED_
 
 #if _MSC_VER > 1000
@@ -13,14 +14,31 @@
 
 #pragma once
 
+#include "WaveletTransformDlg.h" // 대화상자 헤더 선언
+
+
+////////////////////////
+class CWaveletTransformDoc : public CDocument
+{
+protected: // create from serialization only
+    CWaveletTransformDoc();
+    DECLARE_DYNCREATE(CWaveletTransformDoc)
+    // Attributes
+
+public:
+    // Operations
+public:
+    CWaveletTransformDlg *pDlg;
+
+};
+/////////////////////
 
 class CImageProcessingDoc : public CDocument
 {
 protected: // serialization에서만 만들어집니다.
 	CImageProcessingDoc();
     DECLARE_DYNCREATE(CImageProcessingDoc)
-    CWaveletTransformDoc();
-    DECLARE_DYNCREATE(CWaveletTransformDoc)
+   
    
 
 // 특성입니다.
@@ -40,6 +58,12 @@ public:
     int n_eg; //경계선상 점의 수
     int BP[500], n_bp; //코너점의 index, 코너점의 개수
     
+    double *m_Recon;
+    double *m_FilterH0, *m_FilterH1, *m_FilterG0, *m_FilterG1;
+    int m_FilterTap;
+    double **m_tempInput, **m_tempOutput;
+    int m_Level;
+
     struct Complex {
         double Re; // 실수를 위한 변수
         double Im; // 허수를 위한 변수
@@ -70,6 +94,18 @@ public:
     double ** OnMaskProcess(unsigned char * Target, double Mask[3][3]);
     double ** OnScale(double ** Target, int height, int width);
     double ** Image2DMem(int height, int width);
+
+    void OnSNR();
+    double* OnUpWSampling(double* m_Target, int size);
+    void OnWaveletDecode();
+    double** OnWScale(double** m_Target, int height, int width);
+    double* OnConvolution(double* m_Target, double* m_Filter, int size, int  mode);
+    double* OnDownWSampling(double* m_Target, int size);
+    void OnFilterGen(double* m_H0, double* m_H1, double* m_G0, double* m_G1);
+    void OnFilterTapGen();
+    double** OnMem2DAllocDouble(int height, int width);
+    unsigned char ** OnMem2DAllocUnsigned(int height, int width);
+    void OnWaveletEncode();
    
 // 재정의입니다.
 public:

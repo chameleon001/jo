@@ -186,7 +186,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ArrangeDLg.h" />
+    <ClInclude Include="ArrangeDlg.h" />
     <ClInclude Include="ChildFrm.h" />
     <ClInclude Include="ClassView.h" />
     <ClInclude Include="ConstantDlg.h" />
@@ -210,7 +210,7 @@
     <ClInclude Include="WaveletTransformDlg.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ArrangeDLg.cpp" />
+    <ClCompile Include="ArrangeDlg.cpp" />
     <ClCompile Include="ChildFrm.cpp" />
     <ClCompile Include="ClassView.cpp" />
     <ClCompile Include="ConstantDlg.cpp" />

@@ -81,7 +81,7 @@
     <ClInclude Include="WaveletTransformDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="ArrangeDLg.h">
+    <ClInclude Include="ArrangeDlg.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -143,7 +143,7 @@
     <ClCompile Include="WaveletTransformDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="ArrangeDLg.cpp">
+    <ClCompile Include="ArrangeDlg.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,8 +5,8 @@
 #include "ImageProcessing.h"
 #include "WaveletTransformDlg.h"
 #include "afxdialogex.h"
-#include “ImageProcessingDoc.h"
-
+#include "ImageProcessingDoc.h"
+#include "ArrangeDlg.h"
 
 // CWaveletTransformDlg 대화 상자입니다.
 
@@ -44,7 +44,7 @@ void CWaveletTransformDlg::DoDataExchange(CDataExchange* pDX)
 
 
 CWaveletTransformDlg::CWaveletTransformDlg(CImageProcessingDoc *pDoc, CWnd* pParent /*=NULL*/)
-    : CDialogEx(CWaveletTransformDlg::IDD, pParent)
+    : CDialogEx(IDD_WAVELET_DLG, pParent)
 {
     m_pDoc = pDoc; // Doc 클래스 참조
     m_Level = 1; // Wavelet 분해 레벨 초기화
@@ -67,16 +67,40 @@ END_MESSAGE_MAP()
 void CWaveletTransformDlg::OnButtonArrange()
 {
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+    CArrangeDlg dlg;
+
+    dlg.Width = m_pDoc->m_width;
+    dlg.Height = m_pDoc->m_height;
+    dlg.m_tempImage = m_pDoc->m_ArrangeImage;
+
+    UpdateData(TRUE);
+
+    dlg.DoModal(); // 정렬 영상을 위한 대화상자 출력
+
 }
 
 
 void CWaveletTransformDlg::OnButtonEnd()
 {
+    CDialog::OnOK();
+
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
 }
 
 
 void CWaveletTransformDlg::OnButtonUpdate()
 {
+
     // TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+
+    // TODO: Add your control notification handler code here
+    UpdateData(TRUE);
+    m_pDoc->m_Level = m_Level;
+
+    m_pDoc->OnWaveletEncode();
+
+    m_pDoc->OnWaveletDecode(); // 웨이브렛 역변환
+    m_pDoc->OnSNR(); // 신호 대 잡음비
+
+    UpdateData(FALSE);
 }
